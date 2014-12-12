@@ -38,6 +38,12 @@ class StringWriter implements Writer<String> {
 		return this;
 	}
 
+	@Override
+	public Writer<String> writeAndClose () {
+		bytewriter.writeAndClose ();
+		return this;
+	}
+
 	private byte [][] convert (String [] data) {
 		byte [][] converted = new byte [data.length][];
 		for ( int i = 0; i < data.length; i++ ) {

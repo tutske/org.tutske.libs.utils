@@ -8,7 +8,7 @@ import java.io.OutputStream;
 import org.tutske.utils.StreamCopier;
 
 
-class StreamWriter extends AbstractWriter implements Writer<InputStream> {
+class StreamWriter extends AbstractWriter<InputStream> implements Writer<InputStream> {
 
 	protected StreamWriter (File file) { super (file); }
 	protected StreamWriter (OutputStream stream) { super (stream); }

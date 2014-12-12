@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 
-abstract class AbstractWriter {
+abstract class AbstractWriter<T> {
 
 	protected File file;
 	protected OutputStream stream;
@@ -17,6 +17,15 @@ abstract class AbstractWriter {
 
 	protected AbstractWriter (OutputStream stream) {
 		this.stream = stream;
+	}
+
+	abstract public Writer<T> write ();
+
+	public Writer<T> writeAndClose () {
+		Writer<T> writer = write ();
+		try { stream.close (); }
+		catch (IOException e) { WriterExceptionHandler.newFor (e).handle (); }
+		return writer;
 	}
 
 	protected void openStreamIfNeeded () throws IOException {

@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 
-class ByteWriter extends AbstractWriter implements Writer<byte []> {
+class ByteWriter extends AbstractWriter<byte []> implements Writer<byte []> {
 
 	protected ByteWriter (File file) { super (file); }
 	protected ByteWriter (OutputStream stream) { super (stream); }
