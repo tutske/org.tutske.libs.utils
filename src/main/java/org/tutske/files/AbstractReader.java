@@ -1,12 +1,9 @@
 package org.tutske.files;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 
-abstract class AbstractReader {
+abstract class AbstractReader<T> {
 
 	protected File file;
 	protected InputStream stream;
@@ -17,6 +14,15 @@ abstract class AbstractReader {
 
 	protected AbstractReader (InputStream stream) {
 		this.stream = stream;
+	}
+
+	abstract public T read ();
+
+	public T readAndClose () {
+		T result = read ();
+		try { stream.close (); }
+		catch (IOException e) { ReaderExceptionHandler.newFor (e).handle (); }
+		return result;
 	}
 
 	protected void openStreamIfNeeded () throws IOException {

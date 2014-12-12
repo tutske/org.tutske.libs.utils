@@ -24,4 +24,8 @@ class StringReader implements Reader<String> {
 		return new String (bytereader.read (), charset);
 	}
 
+	public String readAndClose () {
+		return new String (bytereader.readAndClose (), charset);
+	}
+
 }

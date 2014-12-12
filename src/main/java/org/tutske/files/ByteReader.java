@@ -8,7 +8,7 @@ import java.io.InputStream;
 import org.tutske.utils.StreamCopier;
 
 
-class ByteReader extends AbstractReader implements Reader<byte []> {
+class ByteReader extends AbstractReader<byte []> implements Reader<byte []> {
 
 	public ByteReader (File file) { super (file); }
 	public ByteReader (InputStream stream) { super (stream); }

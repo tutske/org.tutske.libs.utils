@@ -5,14 +5,10 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Random;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.mockito.Mockito;
 import org.tutske.exception.ReaderException;
 import org.tutske.files.ByteReader;
@@ -57,8 +53,23 @@ public class ByteReaderTest {
 	public void it_should_not_try_to_close_a_given_stream () throws IOException {
 		InputStream stream = mock (InputStream.class);
 		doThrow (new IOException ()).when (stream).close ();
+		when (stream.read (Mockito.any (byte [].class), Mockito.any (int.class), Mockito.any (int.class)))
+			.thenReturn (-1);
 
 		reader = new ByteReader (stream);
+		reader.read ();
+	}
+
+	@Test
+	public void it_should_close_the_stream_if_it_is_asked_to_do_so () throws IOException {
+		InputStream stream = mock (InputStream.class);
+		when (stream.read (Mockito.any (byte [].class), Mockito.any (int.class), Mockito.any (int.class)))
+			.thenReturn (-1);
+
+		reader = new ByteReader (stream);
+		reader.readAndClose ();
+
+		verify (stream).close ();
 	}
 
 	@Test (expected = ReaderException.class)
