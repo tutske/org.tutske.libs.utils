@@ -1,7 +1,16 @@
+before_script:
+    - gradle clean
+
+stages:
+    - test
+    - install
+
 tests:
+    stage: test
     script:
         - gradle clean test
 
-build:
+install:
+    stage: install
     script:
-        - gradle clean build
+        - gradle install
