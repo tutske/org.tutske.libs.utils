@@ -1,13 +1,8 @@
-apply plugin: 'java'
-
-group = 'org.tutske'
-version = 'git describe --dirty'.execute ().text.trim ()
-sourceCompatibility = 1.8
-
-repositories {
-	mavenLocal ()
-	mavenCentral ()
+plugins {
+	id "org.tutske.gradle" version 'a.1.0'
 }
+
+group = 'org.tutske.libs'
 
 dependencies {
 	testCompile (
