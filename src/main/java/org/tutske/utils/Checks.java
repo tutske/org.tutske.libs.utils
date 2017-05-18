@@ -5,6 +5,25 @@ import java.util.Collection;
 
 public class Checks {
 
+	private static final Matcher<String> EMPTY_STRING = new Matcher<String> () {
+		@Override public boolean matches (String value) {
+			return value != null && value.isEmpty ();
+		}
+		@Override public String describe () {
+			return "an empty string";
+		}
+	};
+	private static final Matcher<Object> NULL = new Matcher<Object> () {
+		@Override public boolean matches (Object value) {
+			return value == null;
+		}
+		@Override public String describe () {
+			return "a null value";
+		}
+	};
+	private static final Matcher<Object> NOT_NULL = not (NULL);
+	private static final Matcher<String> NOT_EMPTY_STRING = not (EMPTY_STRING);
+
 	public static <T> void assure (Matcher<T> matcher, T ... values) {
 		for ( T value : values ) {
 			if ( ! matcher.matches (value) ) {
@@ -17,8 +36,20 @@ public class Checks {
 		assert matcher.matches (value) : formatError (value, matcher);
 	}
 
+	public static Matcher<Object> nullValue () {
+		return NULL;
+	}
+
 	public static Matcher<Object> notNull () {
-		return not (nullValue ());
+		return NOT_NULL;
+	}
+
+	public static Matcher<String> emptyString () {
+		return EMPTY_STRING;
+	}
+
+	public static Matcher<String> nonEmptyString () {
+		return NOT_EMPTY_STRING;
 	}
 
 	public static <T> Matcher<T> is (final T expected) {
@@ -28,17 +59,6 @@ public class Checks {
 			}
 			@Override public String describe () {
 				return "a value matching " + expected;
-			}
-		};
-	}
-
-	public static Matcher<Object> nullValue () {
-		return new Matcher<Object> () {
-			@Override public boolean matches (Object value) {
-				return value == null;
-			}
-			@Override public String describe () {
-				return "a null value";
 			}
 		};
 	}
@@ -61,21 +81,6 @@ public class Checks {
 			}
 			@Override public String describe () {
 				return "a number between " + lower.doubleValue () + " (inclusive) and " + upper.doubleValue () + " (exclusive)";
-			}
-		};
-	}
-
-	public static Matcher<String> nonEmptyString () {
-		return not (emptyString ());
-	}
-
-	public static Matcher<String> emptyString () {
-		return new Matcher<String> () {
-			@Override public boolean matches (String value) {
-				return value != null && value.isEmpty ();
-			}
-			@Override public String describe () {
-				return "an empty string";
 			}
 		};
 	}
@@ -152,4 +157,5 @@ public class Checks {
 			matcher.describe (), matcher.describeMismatch (value)
 		);
 	}
+
 }
