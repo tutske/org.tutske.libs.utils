@@ -38,12 +38,12 @@ public class Hex {
 				throw new IllegalArgumentException ("Destination array to small");
 			}
 
-			for ( int i = 0; i < length; i++ ) {
-				int j = destPos + i * 2;
-				int upper = (src[srcPos + i] & 0xf0) >> 4;
-				int lower = src[srcPos + i] & 0x0f;
-				dest[j] = chars[upper];
-				dest[j + 1] = chars[lower];
+			int max = srcPos + length;
+			for ( int i = srcPos; i < max; i++ ) {
+				int upper = (src[i] & 0xf0) >> 4;
+				int lower = src[i] & 0x0f;
+				dest[destPos++] = chars[upper];
+				dest[destPos++] = chars[lower];
 			}
 
 			return destPos + length;
@@ -111,10 +111,12 @@ public class Hex {
 				throw new IllegalArgumentException ("destination array is not big enough");
 			}
 
-			for ( int i = 0; i < length / 2; i++ ) {
-				int j = srcPos + (i * 2);
-				int r = (table [src[j]] << 4) + table [src[j + 1]];
-				dest[destPos + i] = (byte) r;
+			int max = destPos + length / 2;
+			for ( int i = destPos; i < max; i++ ) {
+				dest[i] = (byte) (
+					(table [src[srcPos++]] << 4) +
+					table [src[srcPos++]]
+				);
 			}
 
 			return 0;
