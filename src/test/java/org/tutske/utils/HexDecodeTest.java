@@ -42,7 +42,38 @@ public class HexDecodeTest {
 				Hex.getDecoder (),
 				new byte [] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' },
 				new byte [] { (byte) 0x01, (byte) 0x23, (byte ) 0x45, (byte) 0x67, (byte) 0x89, (byte) 0xab, (byte) 0xcd, (byte) 0xef }
-			}
+			},
+
+			{ Hex.getUpperCaseDecoder (), new byte [] { 'F', 'F' }, new byte [] { (byte) 0xff } },
+			{ Hex.getUpperCaseDecoder (), new byte [] { 'F', 'F', '9', 'A' }, new byte [] { (byte) 0xff, (byte) 0x9a } },
+			{
+				Hex.getUpperCaseDecoder (),
+				new byte [] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' },
+				new byte [] { (byte) 0x01, (byte) 0x23, (byte ) 0x45, (byte) 0x67, (byte) 0x89, (byte) 0xab, (byte) 0xcd, (byte) 0xef }
+			},
+
+			{ Hex.getMixedDecoder (), new byte [] { 'F', 'F' }, new byte [] { (byte) 0xff } },
+			{ Hex.getMixedDecoder (), new byte [] { 'F', 'F', '9', 'a' }, new byte [] { (byte) 0xff, (byte) 0x9a } },
+			{
+				Hex.getMixedDecoder (),
+				new byte [] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' },
+				new byte [] { (byte) 0x01, (byte) 0x23, (byte ) 0x45, (byte) 0x67, (byte) 0x89, (byte) 0xab, (byte) 0xcd, (byte) 0xef }
+			},
+			{ Hex.getMixedDecoder (), new byte [] { 'f', 'f' }, new byte [] { (byte) 0xff } },
+			{ Hex.getMixedDecoder (), new byte [] { 'f', 'f', '9', 'a' }, new byte [] { (byte) 0xff, (byte) 0x9a } },
+			{
+				Hex.getMixedDecoder (),
+				new byte [] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' },
+				new byte [] { (byte) 0x01, (byte) 0x23, (byte ) 0x45, (byte) 0x67, (byte) 0x89, (byte) 0xab, (byte) 0xcd, (byte) 0xef }
+			},
+			{ Hex.getMixedDecoder (), new byte [] { 'f', 'F' }, new byte [] { (byte) 0xff } },
+			{ Hex.getMixedDecoder (), new byte [] { 'F', 'f', '9', 'A' }, new byte [] { (byte) 0xff, (byte) 0x9a } },
+			{
+				Hex.getMixedDecoder (),
+				new byte [] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'b', 'C', 'd', 'E', 'f' },
+				new byte [] { (byte) 0x01, (byte) 0x23, (byte ) 0x45, (byte) 0x67, (byte) 0x89, (byte) 0xab, (byte) 0xcd, (byte) 0xef }
+			},
+
 		});
 	}
 

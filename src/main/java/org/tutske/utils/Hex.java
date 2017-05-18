@@ -158,6 +158,14 @@ public class Hex {
 		return Decoder.LOWER_CASE;
 	}
 
+	public static Decoder getUpperCaseDecoder () {
+		return Decoder.UPPER_CASE;
+	}
+
+	public static Decoder getMixedDecoder () {
+		return Decoder.MIXED_CASE;
+	}
+
 	private static class EncOutputStream extends FilterOutputStream {
 		private boolean closed = false;
 		private Encoder encoder;
