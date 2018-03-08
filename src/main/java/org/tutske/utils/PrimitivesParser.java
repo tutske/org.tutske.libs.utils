@@ -49,7 +49,7 @@ public class PrimitivesParser {
 
 	public static <S, T> T parse (S value, Class<T> clazz) {
 		if ( clazz.isAssignableFrom (value.getClass ()) ) { return (T) value; }
-		if ( String.class.equals (clazz) ) { return (T) value.toString (); }
+		if ( String.class.equals (clazz) ) { return (T) String.valueOf (value); }
 
 		ConvertMap<S> map = converters.get (value.getClass ());
 		if ( map == null ) { throw new RuntimeException ("Can not convert from " + value.getClass ()); }
