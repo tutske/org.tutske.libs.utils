@@ -1,4 +1,4 @@
-package org.tutske.utils;
+package org.tutske.lib.utils;
 
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.*;

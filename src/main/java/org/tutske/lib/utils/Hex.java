@@ -1,4 +1,4 @@
-package org.tutske.utils;
+package org.tutske.lib.utils;
 
 import java.io.FilterOutputStream;
 import java.io.IOException;
@@ -10,6 +10,7 @@ import java.util.Arrays;
 
 
 public class Hex {
+
 	private static final byte [] UPPER_CHARS = new byte [] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 	private static final byte [] LOWER_CHARS = new byte [] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
