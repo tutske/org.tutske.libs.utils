@@ -1,4 +1,4 @@
-package org.tutske.utils;
+package org.tutske.lib.utils;
 
 import java.io.FileInputStream;
 import java.io.InputStream;

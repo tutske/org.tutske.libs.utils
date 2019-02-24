@@ -1,13 +1,11 @@
-package org.tutske.utils;
+package org.tutske.lib.utils;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
-import static org.tutske.utils.PrimitivesParser.*;
+import static org.tutske.lib.utils.PrimitivesParser.*;
 
 import org.junit.Test;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;

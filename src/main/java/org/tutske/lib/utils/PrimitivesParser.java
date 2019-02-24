@@ -1,4 +1,4 @@
-package org.tutske.utils;
+package org.tutske.lib.utils;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;

@@ -1,7 +1,0 @@
-Bundle-ManiferstVersion: 2
-Bundle-Name: xc-utils
-Bundle-SymbolicName: be.xcomm.utils
-Bundle-Version: 1.0.0.SNAPSHOT
-Export-Package: be.xcomm.exception;version="1.0.0.SNAPSHOT"
-    ,be.xcomm.files;version="1.0.0.SNAPSHOT"
-    ,be.xcomm.utils;version="1.0.0.SNAPSHOT"
