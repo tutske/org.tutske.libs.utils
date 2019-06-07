@@ -1,11 +1,13 @@
 package org.tutske.lib.utils;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
 import static org.tutske.lib.utils.PrimitivesParser.*;
 
 import org.junit.Test;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -154,6 +156,19 @@ public class PrimitivesParserTest {
 	@Test (expected = RuntimeException.class)
 	public void it_should_complain_when_it_dous_not_know_how_to_convert_into_a_value () {
 		PrimitivesParser.getParser (String.class, List.class);
+	}
+
+	@Test
+	public void it_should_convert_strings_into_a_path () {
+		assertThat (PrimitivesParser.parse ("/tmp/something.txt", Path.class), is (Paths.get ("/tmp/something.txt")));
+	}
+
+	@Test
+	public void it_should_convert_strings_with_tilda_into_a_user_relative_path () {
+		assertThat (
+			PrimitivesParser.parse ("~/something.txt", Path.class),
+			is (Paths.get (System.getProperty ("user.home") + "/something.txt"))
+		);
 	}
 
 	private Date createDate (TimeZone zone, int year, int month, int day, int hour, int minutes, int seconds) {
