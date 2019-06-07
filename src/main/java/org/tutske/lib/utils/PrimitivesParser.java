@@ -6,7 +6,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,8 +26,6 @@ public class PrimitivesParser {
 		new SimpleDateFormat ("dd/MM/yy")
 	};
 
-	private static final String ERROR_FORMAT = "Clazz not supported for conversion: %s (%s)";
-
 	private static final Map<Class<?>, ConvertMap> converters = new HashMap<> ();
 
 	static {
@@ -41,7 +38,10 @@ public class PrimitivesParser {
 		strings.put (Double.class, Double::parseDouble);
 		strings.put (Boolean.class, Boolean::parseBoolean);
 		strings.put (Date.class, PrimitivesParser::parseDate);
-		strings.put (Path.class, Paths::get);
+		strings.put (Path.class, value -> {
+			if ( ! value.startsWith ("~/") ) { return Paths.get (value); }
+			return Paths.get (System.getProperty ("user.home")).resolve (value.substring (2));
+		});
 
 		strings.put (URI.class, value -> {
 			try { return new URI (value); }
