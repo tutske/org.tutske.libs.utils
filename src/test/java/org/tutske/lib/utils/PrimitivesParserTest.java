@@ -19,6 +19,11 @@ import java.util.function.Function;
 public class PrimitivesParserTest {
 
 	@Test
+	public void it_should_do_nothing_for_null_values () {
+		assertThat (parse (null, String.class), nullValue ());
+	}
+
+	@Test
 	public void it_should_parse_to_a_string () {
 		assertThat (parse ("string", String.class), is ("string"));
 	}

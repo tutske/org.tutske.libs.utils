@@ -1,6 +1,6 @@
 package org.tutske.lib.utils;
 
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 import org.junit.Test;
@@ -229,6 +229,42 @@ public class BagTest {
 
 		assertThat (bag.getAll ("key"), not (hasItem ("primary value")));
 		assertThat (bag.get ("key"), is ("secondary value"));
+	}
+
+	@Test
+	public void it_should_not_remove_anything_if_the_value_is_null () {
+		Bag<String, String> bag = new Bag<String, String> () {{
+			add ("key", "primary value", "secondary value");
+		}};
+
+		bag.remove ("key", null);
+
+		assertThat (bag.get ("key"), is ("primary value"));
+		assertThat (bag.getAll ("key"), hasItem ("secondary value"));
+	}
+
+	@Test
+	public void it_should_not_remove_anything_if_the_value_is_not_present () {
+		Bag<String, String> bag = new Bag<String, String> () {{
+			add ("key", "primary value", "secondary value");
+		}};
+
+		bag.remove ("key", "ternary value");
+
+		assertThat (bag.get ("key"), is ("primary value"));
+		assertThat (bag.getAll ("key"), hasItem ("secondary value"));
+	}
+
+	@Test
+	public void it_should_not_remove_anything_if_the_key_is_not_present () {
+		Bag<String, String> bag = new Bag<String, String> () {{
+			add ("key", "primary value", "secondary value");
+		}};
+
+		bag.remove ("other", "primary value");
+
+		assertThat (bag.get ("key"), is ("primary value"));
+		assertThat (bag.getAll ("key"), hasItem ("secondary value"));
 	}
 
 	@Test
