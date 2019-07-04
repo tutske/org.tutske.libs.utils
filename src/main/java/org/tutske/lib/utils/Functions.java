@@ -1,5 +1,6 @@
 package org.tutske.lib.utils;
 
+import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -68,6 +69,31 @@ public class Functions {
 			try { riskyAccept (s, t); }
 			catch ( Exception e ) { throw Exceptions.wrap (e); }
 		}
+	}
+
+	public static void onShutdown (Runnable fn) { onShutdown (fn, Throwable::printStackTrace); }
+	public static <T> void onShutdown (Callable<T> fn) { onShutdown (fn, Throwable::printStackTrace); }
+	public static <T> void onShutdown (Supplier<T> fn) { onShutdown (fn, Throwable::printStackTrace); }
+
+	public static void onShutdown (Runnable fn, Consumer<Throwable> ex) {
+		Runtime.getRuntime ().addShutdownHook (new Thread (() -> {
+			try { fn.run (); }
+			catch ( Exception e ) { ex.accept (e); }
+		}));
+	}
+
+	public static <T> void onShutdown (Callable<T> fn, Consumer<Throwable> ex) {
+		Runtime.getRuntime ().addShutdownHook (new Thread (() -> {
+			try { fn.call (); }
+			catch ( Exception e ) { ex.accept (e); }
+		}));
+	}
+
+	public static <T> void onShutdown (Supplier<T> fn, Consumer<Throwable> ex) {
+		Runtime.getRuntime ().addShutdownHook (new Thread (() -> {
+			try { fn.get (); }
+			catch ( Exception e ) { ex.accept (e); }
+		}));
 	}
 
 }
