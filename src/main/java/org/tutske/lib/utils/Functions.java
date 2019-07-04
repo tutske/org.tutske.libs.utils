@@ -9,11 +9,21 @@ import java.util.function.Supplier;
 
 public class Functions {
 
+	public static Runnable fn (Action fn) { return fn; }
 	public static <S, T> Function<S, T> fn (RiskyFn<S, T> fn) { return fn; }
 	public static <S, T, U> BiFunction<S, T, U> fn (RiskyBiFn<S, T, U> fn) { return fn; }
 	public static <T> Consumer<T> fn (RiskyConsumer<T> fn) { return fn; }
 	public static <S, T> BiConsumer<S, T> fn (RiskyBiConsumer<S, T> fn) { return fn; }
 	public static <T> Supplier<T> fn (RiskySupplier<T> fn) { return fn; }
+
+	@FunctionalInterface
+	public static interface Action extends Runnable {
+		public void riskyRun () throws Exception;
+		default void run () {
+			try { riskyRun (); }
+			catch ( Exception e ) { throw Exceptions.wrap (e); }
+		}
+	}
 
 	@FunctionalInterface
 	public static interface RiskySupplier<T> extends Supplier<T> {
