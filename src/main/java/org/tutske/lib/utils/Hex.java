@@ -35,6 +35,8 @@ public class Hex {
 		}
 
 		private int encode (byte [] src, int srcPos, byte [] dest, int destPos, int length) {
+			if ( length == 0 ) { return length; }
+
 			if ( dest.length - destPos - 1 < length ) {
 				throw new IllegalArgumentException ("Destination array to small");
 			}

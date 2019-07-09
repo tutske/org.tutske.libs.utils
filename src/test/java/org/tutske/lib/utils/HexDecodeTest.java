@@ -131,6 +131,16 @@ public class HexDecodeTest {
 	}
 
 	@Test
+	public void it_should_not_read_past_the_length () throws Exception {
+		ByteArrayInputStream out = new ByteArrayInputStream (source);
+		InputStream wrapped = decoder.wrap (out);
+
+		wrapped.read (new byte [expected.length], 0, expected.length);
+
+		assertThat (wrapped.read (), is (-1));
+	}
+
+	@Test
 	public void it_should_have_the_same_available_bytes_as_the_underlying_stream () throws IOException {
 		ByteArrayInputStream out = new ByteArrayInputStream (source);
 		InputStream wrapped = decoder.wrap (out);
