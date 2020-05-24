@@ -1,7 +1,7 @@
 package org.tutske.lib.utils;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
 import org.junit.Test;
@@ -128,6 +128,16 @@ public class HexDecodeTest {
 		}
 
 		assertThat (result, is (expected));
+	}
+
+	@Test
+	public void it_should_not_read_past_the_length () throws Exception {
+		ByteArrayInputStream out = new ByteArrayInputStream (source);
+		InputStream wrapped = decoder.wrap (out);
+
+		wrapped.read (new byte [expected.length], 0, expected.length);
+
+		assertThat (wrapped.read (), is (-1));
 	}
 
 	@Test

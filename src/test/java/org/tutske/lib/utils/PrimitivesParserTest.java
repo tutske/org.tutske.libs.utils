@@ -6,6 +6,7 @@ import static org.tutske.lib.utils.PrimitivesParser.*;
 
 import org.junit.Test;
 
+import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Calendar;
@@ -17,6 +18,11 @@ import java.util.function.Function;
 
 
 public class PrimitivesParserTest {
+
+	@Test
+	public void it_should_do_nothing_for_null_values () {
+		assertThat (parse (null, String.class), nullValue ());
+	}
 
 	@Test
 	public void it_should_parse_to_a_string () {
@@ -47,6 +53,19 @@ public class PrimitivesParserTest {
 	public void it_should_parse_to_a_boolean () {
 		assertThat (parse ("true", Boolean.class), is (true));
 		assertThat (parse ("false", Boolean.class), is (false));
+	}
+
+	@Test
+	public void it_should_parse_to_a_uri () {
+		URI uri = parse ("http://user:pass@host.domain/path", URI.class);
+		assertThat (uri.getUserInfo (), is ("user:pass"));
+		assertThat (uri.getHost (), is ("host.domain"));
+		assertThat (uri.getPath (), is ("/path"));
+	}
+
+	@Test (expected = Exception.class)
+	public void it_should_propagate_errors_from_uri_parsing () {
+		parse ("some words in a line", URI.class);
 	}
 
 	@Test
@@ -83,13 +102,13 @@ public class PrimitivesParserTest {
 	}
 
 	@Test
-	public void it_should_convert_a_type_into_it_self () {
+	public void it_should_convert_a_type_into_itself () {
 		TestType value = new TestType ();
 		assertThat (parse (value, TestType.class), is (value));
 	}
 
 	@Test
-	public void it_should_convert_a_type_and_an_asignable_class_to_itself () {
+	public void it_should_convert_a_type_and_an_assignable_class_to_itself () {
 		TestType value = new TestType ();
 		assertThat (parse (value, ITest.class), is (value));
 	}
@@ -169,6 +188,15 @@ public class PrimitivesParserTest {
 			PrimitivesParser.parse ("~/something.txt", Path.class),
 			is (Paths.get (System.getProperty ("user.home") + "/something.txt"))
 		);
+	}
+
+	@Test
+	public void it_should_convert_int_multiple_different_types () {
+		PrimitivesParser.convert (TestType.class, Integer.class, (test) -> 1);
+		PrimitivesParser.convert (TestType.class, Boolean.class, (test) -> false);
+
+		assertThat (parse (new TestType (), Integer.class), is (1));
+		assertThat (parse (new TestType (), Boolean.class), is (false));
 	}
 
 	private Date createDate (TimeZone zone, int year, int month, int day, int hour, int minutes, int seconds) {

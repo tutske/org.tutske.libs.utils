@@ -35,6 +35,8 @@ public class Hex {
 		}
 
 		private int encode (byte [] src, int srcPos, byte [] dest, int destPos, int length) {
+			if ( length == 0 ) { return length; }
+
 			if ( dest.length - destPos - 1 < length ) {
 				throw new IllegalArgumentException ("Destination array to small");
 			}
@@ -168,7 +170,6 @@ public class Hex {
 	}
 
 	private static class EncOutputStream extends FilterOutputStream {
-		private boolean closed = false;
 		private Encoder encoder;
 
 		EncOutputStream(OutputStream os, Encoder encoder) {
@@ -177,22 +178,29 @@ public class Hex {
 		}
 
 		@Override
-		public void write(int b) throws IOException {
-			byte[] buf = new byte[1];
+		public void write (int b) throws IOException {
+			byte [] buf = new byte [1];
 			buf[0] = (byte)(b & 0xff);
-			write(buf, 0, 1);
+			write (buf, 0, 1);
 		}
 
 		@Override
-		public void write(byte[] source, int off, int len) throws IOException {
-			if ( closed ) { throw new IOException("Stream is closed"); }
-			if (len == 0) { return; }
+		public void write (byte [] source, int off, int len) throws IOException {
+			if ( len == 0 ) {
+				out.write (source, off, len);
+				return;
+			}
 
 			if ( off < 0 || len < 0 || off + len > source.length ) {
 				throw new ArrayIndexOutOfBoundsException ();
 			}
 
 			out.write (encoder.encode (source));
+		}
+
+		@Override
+		public void close () throws IOException {
+			out.close ();
 		}
 	}
 
@@ -209,7 +217,7 @@ public class Hex {
 
 		@Override
 		public int read () throws IOException {
-			return read(buff, 0, 1) == -1 ? -1 : buff[0] & 0xff;
+			return read (buff, 0, 1) == -1 ? -1 : buff[0] & 0xff;
 		}
 
 		@Override

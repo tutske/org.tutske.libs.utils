@@ -5,8 +5,6 @@ import org.junit.Test;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
 
-import static org.junit.Assert.assertThat;
-
 
 public class KeyPackTest {
 
