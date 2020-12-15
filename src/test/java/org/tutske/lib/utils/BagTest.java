@@ -5,9 +5,12 @@ import static org.hamcrest.Matchers.*;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class BagTest {
@@ -519,6 +522,37 @@ public class BagTest {
 		}};
 
 		assertThat (bag.values (), contains ("a1", "a2", "a3", "b1", "b2", "b3", "b4"));
+	}
+
+	@Test
+	public void it_should_keep_values_in_order_when_streaming () {
+		Bag<String, String> bag = new Bag<> () {{
+			add ("key", "one", "two", "one");
+		}};
+
+		List<String> values = bag.entrySet ().stream ().map (Map.Entry::getValue).collect (Collectors.toList ());
+		assertThat (values, contains ("one", "two", "one"));
+	}
+
+	@Test
+	public void it_should_keep_values_in_order_when_streaming_2 () {
+		Bag<String, String> bag = new Bag<> () {{
+			add ("key", "one", "two", "one");
+		}};
+
+		List<String> values = bag.values ().stream ().collect (Collectors.toList ());
+		assertThat (values, contains ("one", "two", "one"));
+	}
+
+	@Test
+	public void it_should_keep_values_in_order_when_streaming_3 () {
+		Bag<String, String> bag = new Bag<> () {{
+			add ("key", "one", "two", "one");
+		}};
+
+		List<String> values = new ArrayList<> ();
+		bag.forEach ((k, v) -> values.add (v));
+		assertThat (values, contains ("one", "two", "one"));
 	}
 
 }
