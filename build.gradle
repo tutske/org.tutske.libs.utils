@@ -1,8 +1,10 @@
 plugins {
-	id "org.tutske.gradle" version 'a.2.3'
+	id "org.tutske.gradle" version 'a.2.4'
 }
 
 group = 'org.tutske.libs'
+
+jacoco.toolVersion = '0.8.6'
 
 dependencies {
 	testCompile (
