@@ -9,7 +9,7 @@ java.sourceCompatibility = JavaVersion.VERSION_11
 java.targetCompatibility = JavaVersion.VERSION_11
 
 dependencies {
-	testCompile (
+	testImplementation (
 		[ group: 'junit', name: 'junit', version: '[1,)' ],
 		[ group: 'org.hamcrest', name: 'hamcrest-all', version: '[1,)' ],
 		[ group: 'org.mockito', name: 'mockito-all', version: '[1,)' ]
