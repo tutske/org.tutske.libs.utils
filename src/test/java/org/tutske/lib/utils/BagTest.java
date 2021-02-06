@@ -2,8 +2,9 @@ package org.tutske.lib.utils;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -486,22 +487,26 @@ public class BagTest {
 		assertThat (bag.getAs ("key", Boolean.class), is (false));
 	}
 
-	@Test (expected = RuntimeException.class)
+	@Test
 	public void it_should_complain_when_parsing_of_values_fails () {
 		Bag<String, String> bag = new Bag<String, String> () {{
 			add ("key", "one");
 		}};
 
-		assertThat (bag.getAs ("key", Integer.class), is (false));
+		assertThrows (RuntimeException.class, () -> {
+			assertThat (bag.getAs ("key", Integer.class), is (false));
+		});
 	}
 
-	@Test (expected = RuntimeException.class)
+	@Test
 	public void it_should_complain_when_asking_to_convert_to_an_unknown_class () {
 		Bag<String, String> bag = new Bag<String, String> () {{
 			add ("key", "one");
 		}};
 
-		assertThat (bag.getAs ("key", BagTest.class), is (false));
+		assertThrows (RuntimeException.class, () -> {
+			assertThat (bag.getAs ("key", BagTest.class), is (false));
+		});
 	}
 
 	@Test

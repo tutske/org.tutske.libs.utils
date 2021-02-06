@@ -1,6 +1,6 @@
 package org.tutske.lib.utils;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.security.KeyStore;
 import java.security.cert.Certificate;
