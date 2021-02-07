@@ -164,7 +164,7 @@ public class Bag<K, V> implements Map<K, V> {
 
 	@Override
 	public Set<Map.Entry<K, V>> entrySet () {
-		Set<Map.Entry<K, V>> entries = new HashSet<> ();
+		Set<Map.Entry<K, V>> entries = new LinkedHashSet<> ();
 		data.forEach ((key, values) -> {
 			values.forEach ((value) -> {
 				entries.add (new Entry<> (this, key, value));

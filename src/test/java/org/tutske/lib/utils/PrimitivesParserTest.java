@@ -2,9 +2,10 @@ package org.tutske.lib.utils;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.tutske.lib.utils.PrimitivesParser.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 import java.nio.file.Path;
@@ -63,9 +64,11 @@ public class PrimitivesParserTest {
 		assertThat (uri.getPath (), is ("/path"));
 	}
 
-	@Test (expected = Exception.class)
+	@Test
 	public void it_should_propagate_errors_from_uri_parsing () {
-		parse ("some words in a line", URI.class);
+		assertThrows (RuntimeException.class, () -> {
+			parse ("some words in a line", URI.class);
+		});
 	}
 
 	@Test
@@ -86,19 +89,25 @@ public class PrimitivesParserTest {
 		assertThat (parse ("" + utc.getTime (), Date.class), is (utc));
 	}
 
-	@Test (expected = RuntimeException.class)
+	@Test
 	public void it_should_complain_about_non_parsable_dates () {
-		parse ("remember remember the fifth of november", Date.class);
+		assertThrows (RuntimeException.class, () -> {
+			parse ("remember remember the fifth of november", Date.class);
+		});
 	}
 
-	@Test (expected = RuntimeException.class)
+	@Test
 	public void it_should_comaplain_when_different_types_cannot_be_converted_into_each_other () {
-		parse (new Object (), Boolean.class);
+		assertThrows (RuntimeException.class, () -> {
+			parse (new Object (), Boolean.class);
+		});
 	}
 
-	@Test (expected = RuntimeException.class)
+	@Test
 	public void it_should_complain_if_it_does_not_know_how_to_convert_into_a_type () {
-		parse ("", PrimitivesParser.class);
+		assertThrows (RuntimeException.class, () -> {
+			parse ("", PrimitivesParser.class);
+		});
 	}
 
 	@Test
@@ -167,14 +176,18 @@ public class PrimitivesParserTest {
 		assertThat (converter.apply ("2"), is (2l));
 	}
 
-	@Test (expected = RuntimeException.class)
+	@Test
 	public void it_should_complain_when_it_does_not_know_how_to_convert_from_a_value () {
-		PrimitivesParser.getParser (Map.class, List.class);
+		assertThrows (RuntimeException.class, () -> {
+			PrimitivesParser.getParser (Map.class, List.class);
+		});
 	}
 
-	@Test (expected = RuntimeException.class)
+	@Test
 	public void it_should_complain_when_it_dous_not_know_how_to_convert_into_a_value () {
-		PrimitivesParser.getParser (String.class, List.class);
+		assertThrows (RuntimeException.class, () -> {
+			PrimitivesParser.getParser (String.class, List.class);
+		});
 	}
 
 	@Test

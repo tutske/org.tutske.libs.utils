@@ -2,8 +2,9 @@ package org.tutske.lib.utils;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -50,24 +51,32 @@ public class ResourceTest {
 		assertThat (read (stream), is ("Content of file."));
 	}
 
-	@Test (expected = Exception.class)
+	@Test
 	public void it_should_complain_when_passed_a_null_uri () throws Exception {
-		Resource.getResource ((URI) null);
+		assertThrows (Exception.class, () -> {
+			Resource.getResource ((URI) null);
+		});
 	}
 
-	@Test (expected = Exception.class)
+	@Test
 	public void it_should_complain_when_passed_a_null_string () throws Exception {
-		Resource.getResource ((String) null);
+		assertThrows (Exception.class, () -> {
+			Resource.getResource ((String) null);
+		});
 	}
 
-	@Test (expected = Exception.class)
+	@Test
 	public void it_should_complain_when_the_uri_scheme_is_not_supported () throws Exception {
-		Resource.getResource ("bogus://file.txt");
+		assertThrows (Exception.class, () -> {
+			Resource.getResource ("bogus://file.txt");
+		});
 	}
 
-	@Test (expected = Exception.class)
+	@Test
 	public void it_should_complain_when_the_passed_string_does_not_respresent_a_uri () throws Exception {
-		Resource.getResource ("this is not a uri to a resource");
+		assertThrows (Exception.class, () -> {
+			Resource.getResource ("this is not a uri to a resource");
+		});
 	}
 
 	private String read (InputStream stream) throws IOException {

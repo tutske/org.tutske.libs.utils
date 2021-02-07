@@ -2,12 +2,16 @@ package org.tutske.lib.utils;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class BagTest {
@@ -483,22 +487,26 @@ public class BagTest {
 		assertThat (bag.getAs ("key", Boolean.class), is (false));
 	}
 
-	@Test (expected = RuntimeException.class)
+	@Test
 	public void it_should_complain_when_parsing_of_values_fails () {
 		Bag<String, String> bag = new Bag<String, String> () {{
 			add ("key", "one");
 		}};
 
-		assertThat (bag.getAs ("key", Integer.class), is (false));
+		assertThrows (RuntimeException.class, () -> {
+			assertThat (bag.getAs ("key", Integer.class), is (false));
+		});
 	}
 
-	@Test (expected = RuntimeException.class)
+	@Test
 	public void it_should_complain_when_asking_to_convert_to_an_unknown_class () {
 		Bag<String, String> bag = new Bag<String, String> () {{
 			add ("key", "one");
 		}};
 
-		assertThat (bag.getAs ("key", BagTest.class), is (false));
+		assertThrows (RuntimeException.class, () -> {
+			assertThat (bag.getAs ("key", BagTest.class), is (false));
+		});
 	}
 
 	@Test
@@ -519,6 +527,37 @@ public class BagTest {
 		}};
 
 		assertThat (bag.values (), contains ("a1", "a2", "a3", "b1", "b2", "b3", "b4"));
+	}
+
+	@Test
+	public void it_should_keep_values_in_order_when_streaming () {
+		Bag<String, String> bag = new Bag<> () {{
+			add ("key", "one", "two", "one");
+		}};
+
+		List<String> values = bag.entrySet ().stream ().map (Map.Entry::getValue).collect (Collectors.toList ());
+		assertThat (values, contains ("one", "two", "one"));
+	}
+
+	@Test
+	public void it_should_keep_values_in_order_when_streaming_2 () {
+		Bag<String, String> bag = new Bag<> () {{
+			add ("key", "one", "two", "one");
+		}};
+
+		List<String> values = bag.values ().stream ().collect (Collectors.toList ());
+		assertThat (values, contains ("one", "two", "one"));
+	}
+
+	@Test
+	public void it_should_keep_values_in_order_when_streaming_3 () {
+		Bag<String, String> bag = new Bag<> () {{
+			add ("key", "one", "two", "one");
+		}};
+
+		List<String> values = new ArrayList<> ();
+		bag.forEach ((k, v) -> values.add (v));
+		assertThat (values, contains ("one", "two", "one"));
 	}
 
 }
