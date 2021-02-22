@@ -2,10 +2,13 @@ package org.tutske.lib.utils;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.tutske.lib.utils.Functions.capture;
 import static org.tutske.lib.utils.Functions.fn;
 
 import org.junit.jupiter.api.Test;
 
+import java.net.URI;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -118,8 +121,23 @@ public class FunctionsTest {
 	}
 
 	@Test
-	public void it_should_run_runnables_normally () {
+	public void it_should_run_runnable_normally () {
 		test (Functions.fn (() -> { }));
+	}
+
+	@Test
+	public void it_should_produce_a_value_that_may_cause_an_error () {
+		URI uri = capture (() -> new URI ("http://localhost"));
+		assertThat (uri, not (nullValue ()));
+	}
+
+	@Test
+	public void it_should_propagate_exceptions_when_producing_a_value_that_may_cause_an_error () {
+		RuntimeException e = assertThrows (RuntimeException.class, () -> {
+			capture (() -> new URI ("some random piece of text"));
+		});
+
+		assertThat (e.getMessage (), containsString ("Illegal character"));
 	}
 
 	/* -- helpers -- */
