@@ -184,7 +184,7 @@ public class PrimitivesParserTest {
 	}
 
 	@Test
-	public void it_should_complain_when_it_dous_not_know_how_to_convert_into_a_value () {
+	public void it_should_complain_when_it_does_not_know_how_to_convert_into_a_value () {
 		assertThrows (IllegalArgumentException.class, () -> {
 			PrimitivesParser.getParser (String.class, List.class);
 		});
