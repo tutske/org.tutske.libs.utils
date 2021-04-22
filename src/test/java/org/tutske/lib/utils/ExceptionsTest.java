@@ -10,15 +10,15 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 
 
-public class ExceptionsTest {
+class ExceptionsTest {
 
 	@Test
-	public void it_should_provide_runtime_exceptions () {
+	void it_should_provide_runtime_exceptions () {
 		assertThat (Exceptions.wrap (new Throwable ()), instanceOf (RuntimeException.class));
 	}
 
 	@Test
-	public void it_should_leave_runtime_exceptions_alone () {
+	void it_should_leave_runtime_exceptions_alone () {
 		Exception original = new RuntimeException ("original");
 		RuntimeException wrapped = Exceptions.wrap (original);
 
@@ -27,35 +27,35 @@ public class ExceptionsTest {
 	}
 
 	@Test
-	public void it_should_have_the_same_message () {
+	void it_should_have_the_same_message () {
 		Exception original = new Exception ("original");
 		Exceptions.WrappedException wrapped = (Exceptions.WrappedException) Exceptions.wrap (original);
 		assertThat (wrapped.getMessage (), is (original.getMessage ()));
 	}
 
 	@Test
-	public void it_should_have_the_same_localized_message () {
+	void it_should_have_the_same_localized_message () {
 		Exception original = new Exception ("original");
 		Exceptions.WrappedException wrapped = (Exceptions.WrappedException) Exceptions.wrap (original);
 		assertThat (wrapped.getLocalizedMessage (), is (original.getLocalizedMessage ()));
 	}
 
 	@Test
-	public void it_should_have_the_same_string_output () {
+	void it_should_have_the_same_string_output () {
 		Exception original = new Exception ("original");
 		Exceptions.WrappedException wrapped = (Exceptions.WrappedException) Exceptions.wrap (original);
 		assertThat (wrapped.toString (), is (original.toString ()));
 	}
 
 	@Test
-	public void it_should_unwrap_the_original_exception () {
+	void it_should_unwrap_the_original_exception () {
 		Exception original = new Exception ("original");
 		Exceptions.WrappedException wrapped = (Exceptions.WrappedException) Exceptions.wrap (original);
 		assertThat (wrapped.unwrap (), is (original));
 	}
 
 	@Test
-	public void it_should_unwrap_as_a_specified_exception () {
+	void it_should_unwrap_as_a_specified_exception () {
 		Exception original = new TestException ();
 		Exceptions.WrappedException wrapped = (Exceptions.WrappedException) Exceptions.wrap (original);
 		TestException unwrapped = wrapped.unwrap (TestException.class);
@@ -63,7 +63,7 @@ public class ExceptionsTest {
 	}
 
 	@Test
-	public void it_should_have_the_same_cause () {
+	void it_should_have_the_same_cause () {
 		Exception cause = new Exception ("cause");
 		Exception original = new Exception ("original", cause);
 		Exceptions.WrappedException wrapped = (Exceptions.WrappedException) Exceptions.wrap (original);
@@ -71,7 +71,7 @@ public class ExceptionsTest {
 	}
 
 	@Test
-	public void it_should_have_the_same_stack_trace () {
+	void it_should_have_the_same_stack_trace () {
 		Exception cause = new Exception ("cause");
 		Exception original = new Exception ("original", cause);
 		Exceptions.WrappedException wrapped = (Exceptions.WrappedException) Exceptions.wrap (original);
@@ -79,7 +79,7 @@ public class ExceptionsTest {
 	}
 
 	@Test
-	public void it_should_have_the_same_stack_trace_with_writers () {
+	void it_should_have_the_same_stack_trace_with_writers () {
 		Exception cause = new Exception ("cause");
 		Exception original = new Exception ("original", cause);
 		Exceptions.WrappedException wrapped = (Exceptions.WrappedException) Exceptions.wrap (original);
@@ -87,7 +87,7 @@ public class ExceptionsTest {
 	}
 
 	@Test
-	public void it_should_produce_the_same_stack_trace () {
+	void it_should_produce_the_same_stack_trace () {
 		Exception cause = new Exception ("cause");
 		Exception original = new Exception ("original", cause);
 
@@ -100,7 +100,7 @@ public class ExceptionsTest {
 	}
 
 	@Test
-	public void it_should_wrap_null_causes () {
+	void it_should_wrap_null_causes () {
 		Exception wrapped = Exceptions.wrap (null);
 		assertThat (wrapped.getMessage (), nullValue ());
 		assertThat (wrapped.getLocalizedMessage (), nullValue ());

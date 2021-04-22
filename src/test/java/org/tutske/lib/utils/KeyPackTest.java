@@ -9,10 +9,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 
-public class KeyPackTest {
+class KeyPackTest {
 
 	@Test
-	public void it_should_read_keystores () throws Exception {
+	void it_should_read_keystores () throws Exception {
 		KeyStore keystore = KeyPack.createKeyStore ("resource://test.jks", "testpass".toCharArray ());
 		Certificate cert = keystore.getCertificate ("test");
 		assertThat (cert, not (nullValue ()));
