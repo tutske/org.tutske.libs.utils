@@ -64,12 +64,17 @@ public class PrimitivesParser {
 		if ( String.class.equals (clazz) ) { return (T) String.valueOf (value); }
 
 		ConvertMap<S> map = converters.get (value.getClass ());
-		if ( map == null ) { throw new RuntimeException ("Can not convert from " + value.getClass ()); }
+		if ( map == null ) {
+			throw new IllegalArgumentException (String.format (
+				"Conversion not supported for source type %s -> %s (%s).",
+				value.getClass (), clazz, value
+			));
+		}
 
 		Function<S, ?> fn = map.get (clazz);
 		if ( fn == null ) {
 			throw new IllegalArgumentException (String.format (
-				"Conversion not supported for %s -> %s (%s).",
+				"Conversion not supported for target type %s -> %s (%s).",
 				value.getClass (), clazz, value
 			));
 		}
@@ -81,14 +86,17 @@ public class PrimitivesParser {
 		if ( String.class.equals (target) ) { return (Function) String::valueOf; }
 
 		if ( ! converters.containsKey (source) ) {
-			throw new RuntimeException ("No converter from from type: " + source.getName ());
+			throw new IllegalArgumentException (String.format (
+				"Conversion not supported for source type %s -> %s.",
+				source, target
+			));
 		}
 
 		Function<S, T> converter = (Function) converters.get (source).get (target);
 		if ( converter == null ) {
-			throw new RuntimeException (String.format (
-				"Conversion not supported for %s -> %s.",
-				source.getName (), target.getName ()
+			throw new IllegalArgumentException (String.format (
+				"Conversion not supported for target type %s -> %s.",
+				source, target
 			));
 		}
 

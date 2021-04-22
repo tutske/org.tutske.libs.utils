@@ -98,14 +98,14 @@ public class PrimitivesParserTest {
 
 	@Test
 	public void it_should_comaplain_when_different_types_cannot_be_converted_into_each_other () {
-		assertThrows (RuntimeException.class, () -> {
+		assertThrows (IllegalArgumentException.class, () -> {
 			parse (new Object (), Boolean.class);
 		});
 	}
 
 	@Test
 	public void it_should_complain_if_it_does_not_know_how_to_convert_into_a_type () {
-		assertThrows (RuntimeException.class, () -> {
+		assertThrows (IllegalArgumentException.class, () -> {
 			parse ("", PrimitivesParser.class);
 		});
 	}
@@ -178,14 +178,14 @@ public class PrimitivesParserTest {
 
 	@Test
 	public void it_should_complain_when_it_does_not_know_how_to_convert_from_a_value () {
-		assertThrows (RuntimeException.class, () -> {
+		assertThrows (IllegalArgumentException.class, () -> {
 			PrimitivesParser.getParser (Map.class, List.class);
 		});
 	}
 
 	@Test
 	public void it_should_complain_when_it_dous_not_know_how_to_convert_into_a_value () {
-		assertThrows (RuntimeException.class, () -> {
+		assertThrows (IllegalArgumentException.class, () -> {
 			PrimitivesParser.getParser (String.class, List.class);
 		});
 	}
