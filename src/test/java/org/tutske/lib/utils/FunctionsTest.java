@@ -20,7 +20,7 @@ class FunctionsTest {
 
 	@Test
 	void it_should_accept_errors_in_functions () {
-		Throwable t = ex ("fail", fn ((value) -> {
+		Throwable t = ex ("fail", fn (value -> {
 			if ( "fail".equals (value) ) { throw new Exception (); }
 			return value;
 		}));
@@ -40,7 +40,7 @@ class FunctionsTest {
 
 	@Test
 	void it_should_accept_errors_in_consumers () {
-		Throwable t = ex ("fail", fn ((value) -> {
+		Throwable t = ex ("fail", fn (value -> {
 			if ( "fail".equals (value) ) { throw new Exception (); }
 		}));
 
@@ -78,7 +78,7 @@ class FunctionsTest {
 
 	@Test
 	void it_should_run_functions_normally () {
-		String result = test ("value", fn ((value) -> {
+		String result = test ("value", fn (value -> {
 			if ( "fail".equals (value) ) { throw new Exception (); }
 			return value;
 		}));
@@ -98,7 +98,7 @@ class FunctionsTest {
 
 	@Test
 	void it_should_run_consumers_normally () {
-		test ("value", fn ((value) -> {
+		test ("value", fn (value -> {
 			if ( "fail".equals (value) ) { throw new Exception (); }
 		}));
 	}

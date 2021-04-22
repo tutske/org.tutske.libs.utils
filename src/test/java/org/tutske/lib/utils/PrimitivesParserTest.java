@@ -147,7 +147,7 @@ class PrimitivesParserTest {
 
 	@Test
 	void it_should_use_registered_converters () {
-		PrimitivesParser.convert (TestType.class, Integer.class, (test) -> 1);
+		PrimitivesParser.convert (TestType.class, Integer.class, test -> 1);
 		TestType value = new TestType ();
 		assertThat (parse (value, Integer.class), is (1));
 	}
@@ -205,8 +205,8 @@ class PrimitivesParserTest {
 
 	@Test
 	void it_should_convert_int_multiple_different_types () {
-		PrimitivesParser.convert (TestType.class, Integer.class, (test) -> 1);
-		PrimitivesParser.convert (TestType.class, Boolean.class, (test) -> false);
+		PrimitivesParser.convert (TestType.class, Integer.class, test -> 1);
+		PrimitivesParser.convert (TestType.class, Boolean.class, test -> false);
 
 		assertThat (parse (new TestType (), Integer.class), is (1));
 		assertThat (parse (new TestType (), Boolean.class), is (false));
