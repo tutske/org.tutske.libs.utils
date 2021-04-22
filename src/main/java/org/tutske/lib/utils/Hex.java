@@ -134,7 +134,7 @@ public class Hex {
 
 			if ( buffer.hasArray () ) {
 				dest = new byte [buffer.remaining () / 2];
-				decode (buffer.array (), buffer.arrayOffset () + buffer.position (), dest, 0, buffer.limit ());
+				decode (buffer.array (), buffer.arrayOffset () + buffer.position (), dest, 0, buffer.remaining ());
 			} else {
 				byte [] source = new byte [buffer.remaining ()];
 				buffer.get (source);

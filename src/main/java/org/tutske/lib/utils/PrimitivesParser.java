@@ -26,7 +26,7 @@ public class PrimitivesParser {
 		new SimpleDateFormat ("dd/MM/yy")
 	};
 
-	private static final Map<Class<?>, ConvertMap> converters = new HashMap<> ();
+	private static final Map<Class<?>, ConvertMap<?>> converters = new HashMap<> ();
 
 	static {
 		ConvertMap<String> strings = new ConvertMap<> ();
@@ -52,10 +52,8 @@ public class PrimitivesParser {
 	}
 
 	public static <S, T> void convert (Class<S> source, Class<T> target, Function<S, T> converter) {
-		if ( ! converters.containsKey (source) ) {
-			converters.put (source, new ConvertMap<S> ());
-		}
-		converters.get (source).put (target, converter);
+		converters.computeIfAbsent (source, ignore -> new ConvertMap<S> ());
+		converters.get (source).put (target, (Function) converter);
 	}
 
 	public static <S, T> T parse (S value, Class<T> clazz) {
@@ -63,7 +61,7 @@ public class PrimitivesParser {
 		if ( clazz.isAssignableFrom (value.getClass ()) ) { return (T) value; }
 		if ( String.class.equals (clazz) ) { return (T) String.valueOf (value); }
 
-		ConvertMap<S> map = converters.get (value.getClass ());
+		ConvertMap<S> map = (ConvertMap) converters.get (value.getClass ());
 		if ( map == null ) {
 			throw new IllegalArgumentException (String.format (
 				"Conversion not supported for source type %s -> %s (%s).",

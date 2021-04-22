@@ -167,8 +167,39 @@ public class HexDecodeTest {
 	@ParameterizedTest
 	@MethodSource ("cases")
 	public void it_should_get_the_the_bytes_from_a_byte_buffer (Hex.Decoder decoder, byte [] source, byte [] expected) {
-		ByteBuffer buffer = ByteBuffer.allocate (10);
-		decoder.decode (buffer);
+		ByteBuffer buffer = ByteBuffer.allocate (source.length);
+		fillBuffer (buffer, source);
+		ByteBuffer result = decoder.decode (buffer);
+		assertThat (result.array (), equalTo (expected));
+	}
+
+	@ParameterizedTest
+	@MethodSource ("cases")
+	public void it_should_get_the_the_bytes_from_a_byte_buffer_with_leading_junk (Hex.Decoder decoder, byte [] source, byte [] expected) {
+		ByteBuffer buffer = ByteBuffer.allocate (5 + source.length);
+		fillBuffer (buffer, source, 5);
+		ByteBuffer result = decoder.decode (buffer);
+		assertThat (result.array (), equalTo (expected));
+	}
+
+	@ParameterizedTest
+	@MethodSource ("cases")
+	public void it_should_get_the_the_bytes_from_a_byte_buffer_with_leading_junk_and_an_array_offset (Hex.Decoder decoder, byte [] source, byte [] expected) {
+		ByteBuffer buffer = ByteBuffer.wrap (new byte [10 + source.length], 5, source.length + 5).slice ();
+		fillBuffer (buffer, source, 5);
+		ByteBuffer result = decoder.decode (buffer);
+		assertThat (result.array (), equalTo (expected));
+	}
+
+	private void fillBuffer (ByteBuffer buffer, byte [] bytes) {
+		fillBuffer (buffer, bytes, 0);
+	}
+
+	private void fillBuffer (ByteBuffer buffer, byte [] bytes, int leadJunk) {
+		for ( int i = 0; i < leadJunk; i++ ) { buffer.put ((byte) -1); }
+		buffer.put (bytes, 0, bytes.length);
+		buffer.flip ();
+		if ( leadJunk > 0 ) { buffer.position (leadJunk); }
 	}
 
 }
