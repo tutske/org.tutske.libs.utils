@@ -74,7 +74,7 @@ class BagTest {
 
 	@Test
 	void it_should_remember_multiple_values_on_the_same_key () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "first value");
 			add ("key", "second value");
 		}};
@@ -86,7 +86,7 @@ class BagTest {
 
 	@Test
 	void it_should_should_allow_adding_multiple_values_to_the_same_key_at_once () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "first value", "second value");
 		}};
 
@@ -101,7 +101,7 @@ class BagTest {
 		values.add ("first value");
 		values.add ("second value");
 
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", values);
 		}};
 
@@ -112,7 +112,7 @@ class BagTest {
 
 	@Test
 	void it_should_not_change_the_primary_value_when_adding_on_a_key_with_a_value () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "primary value");
 		}};
 
@@ -123,7 +123,7 @@ class BagTest {
 
 	@Test
 	void it_should_change_the_primary_value_when_putting_on_a_key_with_a_value () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "primary value");
 		}};
 
@@ -134,7 +134,7 @@ class BagTest {
 
 	@Test
 	void it_should_retain_the_old_primary_value_when_putting_on_a_key_with_a_value () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "old primary value");
 		}};
 
@@ -145,7 +145,7 @@ class BagTest {
 
 	@Test
 	void it_should_have_the_new_primary_value_when_replacing_on_a_key () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "old primary value");
 		}};
 
@@ -156,7 +156,7 @@ class BagTest {
 
 	@Test
 	void it_should_no_longer_have_the_old_primary_value_when_replacing_on_a_key () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "old primary value");
 		}};
 
@@ -167,7 +167,7 @@ class BagTest {
 
 	@Test
 	void it_should_still_have_all_the_secondary_items_when_replacing_on_a_key () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "old primary value", "secondary value");
 		}};
 
@@ -178,7 +178,7 @@ class BagTest {
 
 	@Test
 	void it_should_replace_the_primary_value_when_replacing_on_a_key_with_an_old_value () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "old primary value");
 		}};
 
@@ -189,7 +189,7 @@ class BagTest {
 
 	@Test
 	void it_should_not_replace_the_primary_value_when_replacing_on_a_key_with_an_old_secondary_value () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "old primary value", "old secondary value");
 		}};
 
@@ -200,7 +200,7 @@ class BagTest {
 
 	@Test
 	void it_should_replace_secondary_values_when_replacing_on_a_key_with_an_old_value () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "old primary value", "old secondary value");
 		}};
 
@@ -212,7 +212,7 @@ class BagTest {
 
 	@Test
 	void it_should_only_replace_when_the_old_values_match () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "old primary value", "old secondary value");
 		}};
 
@@ -225,7 +225,7 @@ class BagTest {
 
 	@Test
 	void it_should_remove_the_primary_value_when_removing_on_a_key () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "primary value", "secondary value");
 		}};
 
@@ -237,7 +237,7 @@ class BagTest {
 
 	@Test
 	void it_should_not_remove_anything_if_the_value_is_null () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "primary value", "secondary value");
 		}};
 
@@ -249,7 +249,7 @@ class BagTest {
 
 	@Test
 	void it_should_not_remove_anything_if_the_value_is_not_present () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "primary value", "secondary value");
 		}};
 
@@ -261,7 +261,7 @@ class BagTest {
 
 	@Test
 	void it_should_not_remove_anything_if_the_key_is_not_present () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "primary value", "secondary value");
 		}};
 
@@ -279,7 +279,7 @@ class BagTest {
 
 	@Test
 	void it_should_remove_a_primary_value_when_removing_on_a_key_and_old_value () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "primary value", "secondary value");
 		}};
 
@@ -290,7 +290,7 @@ class BagTest {
 
 	@Test
 	void it_should_remove_a_secondary_value_when_removing_on_a_key_and_old_value () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "primary value", "secondary value");
 		}};
 
@@ -301,7 +301,7 @@ class BagTest {
 
 	@Test
 	void it_should_have_a_secondary_value_when_removing_the_primary_value () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "primary value", "secondary value");
 		}};
 
@@ -312,7 +312,7 @@ class BagTest {
 
 	@Test
 	void it_should_clear_all_the_values_of_single_key () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("odds", "first", "third");
 			add ("evens", "second", "forth");
 		}};
@@ -325,7 +325,7 @@ class BagTest {
 	@Test
 	void it_should_put_values_from_a_map () {
 		Bag<String, String> bag = new Bag<> ();
-		bag.putAll (new HashMap<String, String> () {{
+		bag.putAll (new HashMap<> () {{
 			put ("key", "value");
 		}});
 
@@ -334,10 +334,10 @@ class BagTest {
 
 	@Test
 	void it_should_put_values_when_adding_a_map_as_the_primary_values () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "old primary value");
 		}};
-		bag.putAll (new HashMap<String, String> () {{
+		bag.putAll (new HashMap<> () {{
 			put ("key", "new primary value");
 		}});
 
@@ -346,10 +346,10 @@ class BagTest {
 
 	@Test
 	void it_should_keep_the_original_values_as_secondary_when_putting_from_a_map () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "old primary value");
 		}};
-		bag.putAll (new HashMap<String, String> () {{
+		bag.putAll (new HashMap<> () {{
 			put ("key", "new primary value");
 		}});
 
@@ -358,10 +358,10 @@ class BagTest {
 
 	@Test
 	void it_should_add_the_values_in_the_map_as_secondary_when_adding_them () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "primary value");
 		}};
-		bag.addAll (new HashMap<String, String> () {{
+		bag.addAll (new HashMap<> () {{
 			put ("key", "secondary value");
 		}});
 
@@ -370,10 +370,10 @@ class BagTest {
 
 	@Test
 	void it_should_not_modify_the_primary_values_when_adding_values_from_a_map () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "primary value");
 		}};
-		bag.addAll (new HashMap<String, String> () {{
+		bag.addAll (new HashMap<> () {{
 			put ("key", "secondary value");
 		}});
 
@@ -382,11 +382,11 @@ class BagTest {
 
 	@Test
 	void it_should_add_all_the_values_of_an_other_bag_as_secondary_values () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "primary value", "secondary value");
 		}};
 
-		bag.addAll (new Bag<String, String> (){{
+		bag.addAll (new Bag<> (){{
 			add ("key", "extra primary", "extra secondary");
 		}});
 
@@ -398,7 +398,7 @@ class BagTest {
 
 	@Test
 	void it_should_no_longer_contain_a_key_if_all_values_are_removed () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "value");
 		}};
 		bag.remove ("key");
@@ -408,7 +408,7 @@ class BagTest {
 
 	@Test
 	void it_should_no_longer_contain_a_key_if_all_values_are_removed_with_old_values () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "value");
 		}};
 		bag.remove ("key", "value");
@@ -418,7 +418,7 @@ class BagTest {
 
 	@Test
 	void it_should_no_longer_contain_a_key_if_all_values_are_cleared () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "value");
 		}};
 		bag.clear ("key");
@@ -428,7 +428,7 @@ class BagTest {
 
 	@Test
 	void it_should_say_it_contains_primary_values () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "primary value");
 		}};
 		assertThat (bag.containsValue ("primary value"), is (true));
@@ -436,7 +436,7 @@ class BagTest {
 
 	@Test
 	void it_should_say_it_contains_secondary_values () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "primary value", "secondary value");
 		}};
 		assertThat (bag.containsValue ("secondary value"), is (true));
@@ -444,7 +444,7 @@ class BagTest {
 
 	@Test
 	void it_should_parse_string_values_to_integers () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "1");
 		}};
 
@@ -453,7 +453,7 @@ class BagTest {
 
 	@Test
 	void it_should_parse_string_values_to_longs () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "1");
 		}};
 
@@ -462,7 +462,7 @@ class BagTest {
 
 	@Test
 	void it_should_parse_string_values_to_floats () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "1");
 		}};
 
@@ -471,7 +471,7 @@ class BagTest {
 
 	@Test
 	void it_should_parse_string_values_to_floats_with_decimal_part () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "1.2");
 		}};
 
@@ -480,7 +480,7 @@ class BagTest {
 
 	@Test
 	void it_should_parse_string_values_to_booleans () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "false");
 		}};
 
@@ -489,7 +489,7 @@ class BagTest {
 
 	@Test
 	void it_should_complain_when_parsing_of_values_fails () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "one");
 		}};
 
@@ -500,7 +500,7 @@ class BagTest {
 
 	@Test
 	void it_should_complain_when_asking_to_convert_to_an_unknown_class () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key", "one");
 		}};
 
@@ -511,7 +511,7 @@ class BagTest {
 
 	@Test
 	void it_should_know_it_has_keys_even_when_there_is_no_value () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("key");
 		}};
 
@@ -521,7 +521,7 @@ class BagTest {
 
 	@Test
 	void it_should_list_all_the_primary_and_secondary_values () {
-		Bag<String, String> bag = new Bag<String, String> () {{
+		Bag<String, String> bag = new Bag<> () {{
 			add ("a", "a1", "a2", "a3");
 			add ("b", "b1", "b2", "b3", "b4");
 		}};
