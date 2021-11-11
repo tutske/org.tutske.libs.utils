@@ -1,8 +1,16 @@
 plugins {
 	id 'org.tutske.gradle' version 'a.2.6'
+	id 'org.sonarqube' version '3.1.1'
 }
 
 group = 'org.tutske.libs'
 
 java.sourceCompatibility = JavaVersion.VERSION_21
 java.targetCompatibility = JavaVersion.VERSION_21
+
+sonarqube {
+	properties {
+		property 'sonar.projectName', project.name
+		property 'sonar.projectKey', project.name
+	}
+}
