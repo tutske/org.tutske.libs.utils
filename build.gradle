@@ -1,31 +1,18 @@
 plugins {
-	id "org.tutske.gradle" version 'a.2.4'
+	id 'org.tutske.gradle' version 'a.2.6'
 }
 
 group = 'org.tutske.libs'
 
-jacoco.toolVersion = '0.8.6'
-java.sourceCompatibility = JavaVersion.VERSION_11
-java.targetCompatibility = JavaVersion.VERSION_11
-
-dependencies {
-	testImplementation (
-		[ group: 'org.junit.jupiter', name: 'junit-jupiter', version: '[5,6)' ],
-		[ group: 'org.hamcrest', name: 'hamcrest', version: '[2,3)' ],
-		[ group: 'org.mockito', name: 'mockito-core', version: '[2,3)' ]
-	)
-}
+java.sourceCompatibility = JavaVersion.VERSION_17
+java.targetCompatibility = JavaVersion.VERSION_17
 
 compileJava {
 	doFirst {
 		options.compilerArgs = [
 			'--module-path', classpath.asPath,
-			'--release', '11'
+			'--release', '17'
 		]
 		classpath = files ()
 	}
-}
-
-test {
-	useJUnitPlatform ()
 }
