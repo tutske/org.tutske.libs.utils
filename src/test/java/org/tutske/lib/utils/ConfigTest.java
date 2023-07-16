@@ -40,6 +40,16 @@ public class ConfigTest {
 			assertThat (value, is ("default"));
 		}
 
+		@DisplayName ("can use computed values when computing dependent options") @Test void t_7 () throws Exception {
+			Config config = new Config ();
+
+			Function<Config, String> start = c -> c.optionOrDefault ("first", "ab");
+			Function<Config, String> end = c -> c.optionOrDefault ("second", "ba");
+			Function<Config, String> word = c -> c.compute (start) + c.compute (end);
+
+			assertThat (config.compute (word), is ("abba"));
+		}
+
 		@DisplayName ("does not apply any transformations while getting any option value") @Test void t_6 () throws Exception {
 			Function<String, Object> transform = mock (Function.class);
 

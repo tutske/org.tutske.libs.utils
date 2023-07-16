@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 
@@ -120,8 +121,8 @@ public class Config {
 	private record PrioritizedProvider(int priority, Function<String, ConfigValue> provider) { }
 
 	private final List<PrioritizedProvider> providers = new ArrayList<> ();
-	private final Map<String, ConfigValue> valueCache = new HashMap<> ();
-	private final Map<Function<Config, ?>, Object> computeCache = new HashMap<> ();
+	private final Map<String, ConfigValue> valueCache = new ConcurrentHashMap<> ();
+	private final Map<Function<Config, ?>, Object> computeCache = new ConcurrentHashMap<> ();
 
 	public Config load (int priority, Function<String, ConfigValue> provider) {
 		valueCache.clear ();
