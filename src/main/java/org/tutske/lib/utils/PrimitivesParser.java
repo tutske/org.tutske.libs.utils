@@ -26,7 +26,7 @@ public class PrimitivesParser {
 		new SimpleDateFormat ("dd/MM/yy")
 	};
 
-	private static final Map<Class<?>, ConvertMap> converters = new HashMap<> ();
+	private static final Map<Class<?>, ConvertMap<?>> converters = new HashMap<> ();
 
 	static {
 		ConvertMap<String> strings = new ConvertMap<> ();
@@ -52,10 +52,8 @@ public class PrimitivesParser {
 	}
 
 	public static <S, T> void convert (Class<S> source, Class<T> target, Function<S, T> converter) {
-		if ( ! converters.containsKey (source) ) {
-			converters.put (source, new ConvertMap<S> ());
-		}
-		converters.get (source).put (target, converter);
+		converters.computeIfAbsent (source, ignore -> new ConvertMap<S> ());
+		converters.get (source).put (target, (Function) converter);
 	}
 
 	public static <S, T> T parse (S value, Class<T> clazz) {
@@ -63,13 +61,18 @@ public class PrimitivesParser {
 		if ( clazz.isAssignableFrom (value.getClass ()) ) { return (T) value; }
 		if ( String.class.equals (clazz) ) { return (T) String.valueOf (value); }
 
-		ConvertMap<S> map = converters.get (value.getClass ());
-		if ( map == null ) { throw new RuntimeException ("Can not convert from " + value.getClass ()); }
+		ConvertMap<S> map = (ConvertMap) converters.get (value.getClass ());
+		if ( map == null ) {
+			throw new IllegalArgumentException (String.format (
+				"Conversion not supported for source type %s -> %s (%s).",
+				value.getClass (), clazz, value
+			));
+		}
 
 		Function<S, ?> fn = map.get (clazz);
 		if ( fn == null ) {
 			throw new IllegalArgumentException (String.format (
-				"Conversion not supported for %s -> %s (%s).",
+				"Conversion not supported for target type %s -> %s (%s).",
 				value.getClass (), clazz, value
 			));
 		}
@@ -81,14 +84,17 @@ public class PrimitivesParser {
 		if ( String.class.equals (target) ) { return (Function) String::valueOf; }
 
 		if ( ! converters.containsKey (source) ) {
-			throw new RuntimeException ("No converter from from type: " + source.getName ());
+			throw new IllegalArgumentException (String.format (
+				"Conversion not supported for source type %s -> %s.",
+				source, target
+			));
 		}
 
 		Function<S, T> converter = (Function) converters.get (source).get (target);
 		if ( converter == null ) {
-			throw new RuntimeException (String.format (
-				"Conversion not supported for %s -> %s.",
-				source.getName (), target.getName ()
+			throw new IllegalArgumentException (String.format (
+				"Conversion not supported for target type %s -> %s.",
+				source, target
 			));
 		}
 

@@ -15,7 +15,7 @@ import java.nio.ByteBuffer;
 import java.util.stream.Stream;
 
 
-public class HexEncodeTest {
+class HexEncodeTest {
 
 	public static Stream<Arguments> cases () {
 		return Stream.of (
@@ -38,13 +38,13 @@ public class HexEncodeTest {
 
 	@ParameterizedTest
 	@MethodSource ("cases")
-	public void it_should_encode_the_byte_array (Hex.Encoder encoder, byte [] source, byte [] expected) {
+	void it_should_encode_the_byte_array (Hex.Encoder encoder, byte [] source, byte [] expected) {
 		assertThat (encoder.encode (source), is (expected));
 	}
 
 	@ParameterizedTest
 	@MethodSource ("cases")
-	public void it_should_encode_into_a_byte_array (Hex.Encoder encoder, byte [] source, byte [] expected) {
+	void it_should_encode_into_a_byte_array (Hex.Encoder encoder, byte [] source, byte [] expected) {
 		byte [] result = new byte [expected.length];
 		encoder.encode (source, result);
 		assertThat (result, is (expected));
@@ -52,7 +52,7 @@ public class HexEncodeTest {
 
 	@ParameterizedTest
 	@MethodSource ("cases")
-	public void it_should_complain_when_the_target_array_is_not_big_enough (Hex.Encoder encoder, byte [] source, byte [] expected) {
+	void it_should_complain_when_the_target_array_is_not_big_enough (Hex.Encoder encoder, byte [] source, byte [] expected) {
 		if ( source.length == 0 ) { return; }
 		assertThrows (IllegalArgumentException.class, () -> {
 			encoder.encode (source, new byte [source.length]);
@@ -61,21 +61,21 @@ public class HexEncodeTest {
 
 	@ParameterizedTest
 	@MethodSource ("cases")
-	public void it_should_encode_to_string (Hex.Encoder encoder, byte [] source, byte [] expected) {
+	void it_should_encode_to_string (Hex.Encoder encoder, byte [] source, byte [] expected) {
 		String result = encoder.encodeToString (source);
 		assertThat (result, is (new String (expected)));
 	}
 
 	@ParameterizedTest
 	@MethodSource ("cases")
-	public void it_should_encode_byte_buffers (Hex.Encoder encoder, byte [] source, byte [] expected) {
+	void it_should_encode_byte_buffers (Hex.Encoder encoder, byte [] source, byte [] expected) {
 		ByteBuffer result = encoder.encode (ByteBuffer.wrap (source));
 		assertThat (result.array (), is (expected));
 	}
 
 	@ParameterizedTest
 	@MethodSource ("cases")
-	public void it_should_wrap_output_streams (Hex.Encoder encoder, byte [] source, byte [] expected) throws Exception {
+	void it_should_wrap_output_streams (Hex.Encoder encoder, byte [] source, byte [] expected) throws Exception {
 		ByteArrayOutputStream out = new ByteArrayOutputStream ();
 		OutputStream wrapped = encoder.wrap (out);
 		wrapped.write (source, 0, source.length);
@@ -84,7 +84,7 @@ public class HexEncodeTest {
 
 	@ParameterizedTest
 	@MethodSource ("cases")
-	public void it_should_wrap_output_streams_written_byte_by_byte (Hex.Encoder encoder, byte [] source, byte [] expected) throws Exception {
+	void it_should_wrap_output_streams_written_byte_by_byte (Hex.Encoder encoder, byte [] source, byte [] expected) throws Exception {
 		ByteArrayOutputStream out = new ByteArrayOutputStream ();
 		OutputStream wrapped = encoder.wrap (out);
 		for ( byte b : source ) { wrapped.write (b); }
@@ -93,7 +93,7 @@ public class HexEncodeTest {
 
 	@ParameterizedTest
 	@MethodSource ("cases")
-	public void it_should_complain_when_writing_invalid_array_parts (Hex.Encoder encoder, byte [] source, byte [] expected) throws Exception {
+	void it_should_complain_when_writing_invalid_array_parts (Hex.Encoder encoder, byte [] source, byte [] expected) throws Exception {
 		ByteArrayOutputStream out = new ByteArrayOutputStream ();
 		OutputStream wrapped = encoder.wrap (out);
 		assertThrows (ArrayIndexOutOfBoundsException.class, () -> {
@@ -103,7 +103,7 @@ public class HexEncodeTest {
 
 	@ParameterizedTest
 	@MethodSource ("cases")
-	public void it_should_complain_when_writing_when_original_output_stream_is_closed (Hex.Encoder encoder, byte [] source, byte [] expected) throws Exception {
+	void it_should_complain_when_writing_when_original_output_stream_is_closed (Hex.Encoder encoder, byte [] source, byte [] expected) throws Exception {
 		ClosingByteArrayOutputStream out = new ClosingByteArrayOutputStream ();
 		OutputStream wrapped = encoder.wrap (out);
 
@@ -116,7 +116,7 @@ public class HexEncodeTest {
 
 	@ParameterizedTest
 	@MethodSource ("cases")
-	public void it_should_complain_when_writing_when_the_wrapped_output_stream_is_closed (Hex.Encoder encoder, byte [] source, byte [] expected) throws Exception {
+	void it_should_complain_when_writing_when_the_wrapped_output_stream_is_closed (Hex.Encoder encoder, byte [] source, byte [] expected) throws Exception {
 		ClosingByteArrayOutputStream out = new ClosingByteArrayOutputStream ();
 		OutputStream wrapped = encoder.wrap (out);
 

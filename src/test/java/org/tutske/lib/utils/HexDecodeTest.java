@@ -17,18 +17,18 @@ import java.nio.ByteBuffer;
 import java.util.stream.Stream;
 
 
-public class HexDecodeTest {
+class HexDecodeTest {
 
-	public static class Extras {
+	static class Extras {
 		@Test
-		public void it_should_complain_when_input_has_odd_length () {
+		void it_should_complain_when_input_has_odd_length () {
 			assertThrows (IllegalArgumentException.class, () -> {
 				Hex.getDecoder ().decode (new byte [] {'f'});
 			});
 		}
 
 		@Test
-		public void it_should_complain_when_input_has_odd_length_2 () {
+		void it_should_complain_when_input_has_odd_length_2 () {
 			assertThrows (IllegalArgumentException.class, () -> {
 				Hex.getDecoder ().decode (new byte[] { 'f' }, new byte[10]);
 			});
@@ -79,13 +79,13 @@ public class HexDecodeTest {
 
 	@ParameterizedTest
 	@MethodSource ("cases")
-	public void it_should_decode_the_byte_array (Hex.Decoder decoder, byte [] source, byte [] expected) {
+	void it_should_decode_the_byte_array (Hex.Decoder decoder, byte [] source, byte [] expected) {
 		assertThat (decoder.decode(source), is (expected));
 	}
 
 	@ParameterizedTest
 	@MethodSource ("cases")
-	public void it_should_decode_into_a_byte_array (Hex.Decoder decoder, byte [] source, byte [] expected) {
+	void it_should_decode_into_a_byte_array (Hex.Decoder decoder, byte [] source, byte [] expected) {
 		byte [] result = new byte [expected.length];
 		decoder.decode(source, result);
 		assertThat (result, is (expected));
@@ -93,7 +93,7 @@ public class HexDecodeTest {
 
 	@ParameterizedTest
 	@MethodSource ("cases")
-	public void it_should_complain_when_the_target_array_is_not_big_enough (Hex.Decoder decoder, byte [] source, byte [] expected) {
+	void it_should_complain_when_the_target_array_is_not_big_enough (Hex.Decoder decoder, byte [] source, byte [] expected) {
 		assertThrows (IllegalArgumentException.class, () -> {
 			decoder.decode (source, new byte [expected.length - 1]);
 		});
@@ -101,21 +101,21 @@ public class HexDecodeTest {
 
 	@ParameterizedTest
 	@MethodSource ("cases")
-	public void it_should_decode_a_string (Hex.Decoder decoder, byte [] source, byte [] expected) {
+	void it_should_decode_a_string (Hex.Decoder decoder, byte [] source, byte [] expected) {
 		byte [] result = decoder.decode (new String (source));
 		assertThat (result, is (expected));
 	}
 
 	@ParameterizedTest
 	@MethodSource ("cases")
-	public void it_should_decode_byte_buffers (Hex.Decoder decoder, byte [] source, byte [] expected) {
+	void it_should_decode_byte_buffers (Hex.Decoder decoder, byte [] source, byte [] expected) {
 		ByteBuffer result = decoder.decode (ByteBuffer.wrap (source));
 		assertThat (result.array (), is (expected));
 	}
 
 	@ParameterizedTest
 	@MethodSource ("cases")
-	public void it_should_wrap_input_streams (Hex.Decoder decoder, byte [] source, byte [] expected) throws Exception {
+	void it_should_wrap_input_streams (Hex.Decoder decoder, byte [] source, byte [] expected) throws Exception {
 		ByteArrayInputStream out = new ByteArrayInputStream (source);
 		InputStream wrapped = decoder.wrap (out);
 		byte [] result = new byte [expected.length];
@@ -125,7 +125,7 @@ public class HexDecodeTest {
 
 	@ParameterizedTest
 	@MethodSource ("cases")
-	public void it_should_wrap_an_input_stream_that_is_read_byte_by_byte (Hex.Decoder decoder, byte [] source, byte [] expected) throws Exception {
+	void it_should_wrap_an_input_stream_that_is_read_byte_by_byte (Hex.Decoder decoder, byte [] source, byte [] expected) throws Exception {
 		ByteArrayInputStream out = new ByteArrayInputStream (source);
 		InputStream wrapped = decoder.wrap (out);
 		byte [] result = new byte [expected.length];
@@ -139,7 +139,7 @@ public class HexDecodeTest {
 
 	@ParameterizedTest
 	@MethodSource ("cases")
-	public void it_should_not_read_past_the_length (Hex.Decoder decoder, byte [] source, byte [] expected) throws Exception {
+	void it_should_not_read_past_the_length (Hex.Decoder decoder, byte [] source, byte [] expected) throws Exception {
 		ByteArrayInputStream out = new ByteArrayInputStream (source);
 		InputStream wrapped = decoder.wrap (out);
 
@@ -150,7 +150,7 @@ public class HexDecodeTest {
 
 	@ParameterizedTest
 	@MethodSource ("cases")
-	public void it_should_have_the_same_available_bytes_as_the_underlying_stream (Hex.Decoder decoder, byte [] source, byte [] expected) throws IOException {
+	void it_should_have_the_same_available_bytes_as_the_underlying_stream (Hex.Decoder decoder, byte [] source, byte [] expected) throws IOException {
 		ByteArrayInputStream out = new ByteArrayInputStream (source);
 		InputStream wrapped = decoder.wrap (out);
 		assertThat (wrapped.available (), is (out.available ()));
@@ -158,7 +158,7 @@ public class HexDecodeTest {
 
 	@ParameterizedTest
 	@MethodSource ("cases")
-	public void it_should_call_the_underlying_screams_close_method (Hex.Decoder decoder, byte [] source, byte [] expected) throws IOException {
+	void it_should_call_the_underlying_screams_close_method (Hex.Decoder decoder, byte [] source, byte [] expected) throws IOException {
 		InputStream out = mock (InputStream.class);
 		decoder.wrap (out).close ();
 		verify (out).close ();
@@ -166,9 +166,40 @@ public class HexDecodeTest {
 
 	@ParameterizedTest
 	@MethodSource ("cases")
-	public void it_should_get_the_the_bytes_from_a_byte_buffer (Hex.Decoder decoder, byte [] source, byte [] expected) {
-		ByteBuffer buffer = ByteBuffer.allocate (10);
-		decoder.decode (buffer);
+	void it_should_get_the_the_bytes_from_a_byte_buffer (Hex.Decoder decoder, byte [] source, byte [] expected) {
+		ByteBuffer buffer = ByteBuffer.allocate (source.length);
+		fillBuffer (buffer, source);
+		ByteBuffer result = decoder.decode (buffer);
+		assertThat (result.array (), equalTo (expected));
+	}
+
+	@ParameterizedTest
+	@MethodSource ("cases")
+	void it_should_get_the_the_bytes_from_a_byte_buffer_with_leading_junk (Hex.Decoder decoder, byte [] source, byte [] expected) {
+		ByteBuffer buffer = ByteBuffer.allocate (5 + source.length);
+		fillBuffer (buffer, source, 5);
+		ByteBuffer result = decoder.decode (buffer);
+		assertThat (result.array (), equalTo (expected));
+	}
+
+	@ParameterizedTest
+	@MethodSource ("cases")
+	void it_should_get_the_the_bytes_from_a_byte_buffer_with_leading_junk_and_an_array_offset (Hex.Decoder decoder, byte [] source, byte [] expected) {
+		ByteBuffer buffer = ByteBuffer.wrap (new byte [10 + source.length], 5, source.length + 5).slice ();
+		fillBuffer (buffer, source, 5);
+		ByteBuffer result = decoder.decode (buffer);
+		assertThat (result.array (), equalTo (expected));
+	}
+
+	private void fillBuffer (ByteBuffer buffer, byte [] bytes) {
+		fillBuffer (buffer, bytes, 0);
+	}
+
+	private void fillBuffer (ByteBuffer buffer, byte [] bytes, int leadJunk) {
+		for ( int i = 0; i < leadJunk; i++ ) { buffer.put ((byte) -1); }
+		buffer.put (bytes, 0, bytes.length);
+		buffer.flip ();
+		if ( leadJunk > 0 ) { buffer.position (leadJunk); }
 	}
 
 }

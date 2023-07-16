@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 
@@ -53,7 +53,7 @@ public class Hex {
 		}
 
 		public String encodeToString (byte [] src) {
-			return new String (encode (src), Charset.forName ("utf-8"));
+			return new String (encode (src), StandardCharsets.UTF_8);
 		}
 
 		public ByteBuffer encode (ByteBuffer buffer) {
@@ -76,11 +76,11 @@ public class Hex {
 	}
 
 	public static class Decoder {
-		private static Decoder LOWER_CASE = new Decoder (LOWER_CHARS);
-		private static Decoder UPPER_CASE = new Decoder (UPPER_CHARS);
-		private static Decoder MIXED_CASE = new Decoder (LOWER_CHARS, UPPER_CHARS);
+		private static final Decoder LOWER_CASE = new Decoder (LOWER_CHARS);
+		private static final Decoder UPPER_CASE = new Decoder (UPPER_CHARS);
+		private static final Decoder MIXED_CASE = new Decoder (LOWER_CHARS, UPPER_CHARS);
 
-		private int [] table = new int [255];
+		private final int [] table = new int [255];
 
 		private Decoder (byte [] ... chars) {
 			Arrays.fill (table, (byte) -1);
@@ -134,7 +134,7 @@ public class Hex {
 
 			if ( buffer.hasArray () ) {
 				dest = new byte [buffer.remaining () / 2];
-				decode (buffer.array (), buffer.arrayOffset () + buffer.position (), dest, 0, buffer.limit ());
+				decode (buffer.array (), buffer.arrayOffset () + buffer.position (), dest, 0, buffer.remaining ());
 			} else {
 				byte [] source = new byte [buffer.remaining ()];
 				buffer.get (source);

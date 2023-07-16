@@ -33,8 +33,8 @@ checked exception thrown by any of the methods used in a method.
 		fail ();
 	}
 
-When libraries have declared their methods with a ``throws`` clause we have to deal with them
-somehow, either by declaring that we throw them, or by wrapping in a custom exception
+When libraries have declared their methods with a ``throws`` clause we have to deal with
+them somehow, either by declaring that we throw them, or by wrapping in a custom exception
 
 .. code-block:: java
 	:caption: Lib.java
@@ -66,19 +66,19 @@ We can also wrap the exception in a custom one
 		catch ( LibException e) { throw new CodeException (e.getMessage (), e); }
 	}
 
-Now we have to declare a custom exception, we have to keep declaring that a ``CodeException``
-can be thrown on all other methods that use this, and if we are writing a library our
-users will be faced with the same problem.
+Now we have to declare a custom exception, we have to keep declaring that a
+``CodeException`` can be thrown on all other methods that use this, and if we are writing
+a library our users will be faced with the same problem.
 
 Instead of wrapping it in a custom exception we could wrap it in a ``RuntimeException``,
-but we don't want to wrap uncheched exceptions, and we don't want our
-stacktraces to look different.
+but we don't want to wrap uncheched exceptions, and we don't want our stacktraces to look
+different.
 
 
 .. rubric:: how utils help
 
-To solve these problems  ``Exceptions`` has a utility
-method that will help you in these situations.
+To solve these problems  ``Exceptions`` has a utility method that will help you in these
+situations.
 
 .. code-block:: java
 	:caption: Code.java
@@ -100,7 +100,7 @@ Functions
 ==========================================================================================
 
 Java 8 introduced functional interfaces, and added some basic definition in the package
-``java.util.functions``. Unfortionately these interfaces do not allow you to throw
+``java.util.functions``. Unfortunately these interfaces do not allow you to throw
 exceptions.
 
 .. code-block:: java
@@ -117,7 +117,8 @@ exceptions.
 	public String process (String step, int index) throws Exception {
 		if ( "START".equals (step) { return ""; }
 		if ( index < 5 ) { return ""; }
-		return "DONE";
+		if ( index == 5 ) { return "DONE"; }
+		throw new Exception ("Index out of bounds");
 	}
 
 	public static void main (String [] args) {
@@ -146,7 +147,7 @@ Now the code will compile. When an ``process`` receives an index greater than 5 
 Variants of ``fn`` exists for ``Function``, ``BiFunction``, ``Runnable``, ``Consumer``,
 ``BiConsumer``, and ``Supplier``.
 
-A simular problem happens when you want to create a thread with a method that throws an
+A similar problem happens when you want to create a thread with a method that throws an
 exception.
 
 .. code-block:: java
@@ -212,7 +213,7 @@ Or define a reusable method that will handle exceptions.
 - Be careful when wrapping methods that get called asynchronously.
 
   Your method will still throw exceptions even if they are not declared on a method. This
-  may cause some threads to fail, and ever stop parts of your application.
+  may cause some threads to fail, and even stop parts of your application.
 
   Wrapping your methods in ``fn ()`` does not mean exceptions are handled, only that you
   are no longer encumbered by declaring them on whole chains of methods. You may still
@@ -222,7 +223,7 @@ Or define a reusable method that will handle exceptions.
 Hex
 ==========================================================================================
 
-Simularly to the Base64 encoding classes provided with java 8 ``Hex`` has encoding and
+Similarly to the Base64 encoding classes provided with java 8 ``Hex`` has encoding and
 decoding classes for hexadecimal representations.
 
 .. code-block:: java
@@ -231,19 +232,19 @@ decoding classes for hexadecimal representations.
 	String encoded = encoder.encodeToString (bytes);
 
 There are two encoders, one that encodes everything in numbers and lowercase letters
-(``getEncoder ()``) and one that encodes everything in numbers and uppercose letters
+(``getEncoder ()``) and one that encodes everything in numbers and uppercase letters
 (``getUpperCaseEncoder ()``).
 
-There are three decoders. One that expects lowercase letters (``getDecoder ()``), one
-that expects upper case letters (``getUpperCaseDecoder ()``), and one that ignores &
-casing (``getMixedDecoder ()``).
+There are three decoders. One that expects lowercase letters (``getDecoder ()``), one that
+expects upper case letters (``getUpperCaseDecoder ()``), and one that ignores & casing
+(``getMixedDecoder ()``).
 
 
 Primitives Parser
 ==========================================================================================
 
 Often times data is represented as a string, but we want the represented value instead of
-the string. This convertion can be done by hand (e.g., ``Integer.parseInt ("1");``). But
+the string. This conversion can be done by hand (e.g., ``Integer.parseInt ("1");``). But
 you may not always know what type it should be.
 
 .. code-block:: java
@@ -252,8 +253,8 @@ you may not always know what type it should be.
 		// ?
 	}
 
-You could go over all the cases that you want to support, Integer, Long, Float, Double. But
-perhaps you also want to support BigInteger?
+You could go over all the cases that you want to support, Integer, Long, Float, Double.
+But perhaps you also want to support BigInteger?
 
 Parsing strings to primitives can be handled by these utilities.
 
@@ -270,9 +271,9 @@ You can also get a method that will parse values from one type into an other.
 	Function<String, Integer> parse = PrimitivesParser.getParser (String.class, Integer.class);
 	Stream.of ("1", "2").map (parse).collect (Collectors.toList ());
 
-Support for Integer, Long, Float, Double, Boolean, Date, Path, and Uri is build in.
-This may not be a complete list of things that are needed. Lukely you can teach the parser
-to convert into other times (and ever from types that are not strings.
+Support for Integer, Long, Float, Double, Boolean, Date, Path, and Uri is build in. This
+may not be a complete list of things that are needed. Luckily you can teach the parser to
+convert into other types (and even from types that are not strings).
 
 .. code-block:: java
 

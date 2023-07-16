@@ -2,10 +2,13 @@ package org.tutske.lib.utils;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.tutske.lib.utils.Functions.capture;
 import static org.tutske.lib.utils.Functions.fn;
 
 import org.junit.jupiter.api.Test;
 
+import java.net.URI;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -13,11 +16,11 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 
-public class FunctionsTest {
+class FunctionsTest {
 
 	@Test
-	public void it_should_accept_errors_in_functions () {
-		Throwable t = ex ("fail", fn ((value) -> {
+	void it_should_accept_errors_in_functions () {
+		Throwable t = ex ("fail", fn (value -> {
 			if ( "fail".equals (value) ) { throw new Exception (); }
 			return value;
 		}));
@@ -26,7 +29,7 @@ public class FunctionsTest {
 	}
 
 	@Test
-	public void it_should_accept_errors_in_bi_functions () {
+	void it_should_accept_errors_in_bi_functions () {
 		Throwable t = ex ("fail", "value", fn ((a, b) -> {
 			if ( "fail".equals (a) || "fail".equals (b)) { throw new Exception (); }
 			return a.length () > b.length () ? a : b;
@@ -36,8 +39,8 @@ public class FunctionsTest {
 	}
 
 	@Test
-	public void it_should_accept_errors_in_consumers () {
-		Throwable t = ex ("fail", fn ((value) -> {
+	void it_should_accept_errors_in_consumers () {
+		Throwable t = ex ("fail", fn (value -> {
 			if ( "fail".equals (value) ) { throw new Exception (); }
 		}));
 
@@ -45,7 +48,7 @@ public class FunctionsTest {
 	}
 
 	@Test
-	public void it_should_accept_errors_in_bi_consumers () {
+	void it_should_accept_errors_in_bi_consumers () {
 		Throwable t = ex ("fail", "value", fn ((a, b) -> {
 			if ( "fail".equals (a) || "fail".equals (b)) { throw new Exception (); }
 		}));
@@ -54,7 +57,7 @@ public class FunctionsTest {
 	}
 
 	@Test
-	public void it_should_accept_errors_in_suppliers () {
+	void it_should_accept_errors_in_suppliers () {
 		Throwable t = ex (fn (() -> {
 			if ( true ) { throw new Exception (); }
 			return "other";
@@ -64,7 +67,7 @@ public class FunctionsTest {
 	}
 
 	@Test
-	public void it_should_accept_errors_in_runnables () {
+	void it_should_accept_errors_in_runnables () {
 		Throwable t = ex (fn ((Functions.Action) () -> {
 			throw new Exception ();
 		}));
@@ -74,8 +77,8 @@ public class FunctionsTest {
 
 
 	@Test
-	public void it_should_run_functions_normally () {
-		String result = test ("value", fn ((value) -> {
+	void it_should_run_functions_normally () {
+		String result = test ("value", fn (value -> {
 			if ( "fail".equals (value) ) { throw new Exception (); }
 			return value;
 		}));
@@ -84,7 +87,7 @@ public class FunctionsTest {
 	}
 
 	@Test
-	public void it_should_run_bi_functions_normally () {
+	void it_should_run_bi_functions_normally () {
 		String result = test ("longest", "value", fn ((a, b) -> {
 			if ( "fail".equals (a) || "fail".equals (b)) { throw new Exception (); }
 			return a.length () > b.length () ? a : b;
@@ -94,21 +97,21 @@ public class FunctionsTest {
 	}
 
 	@Test
-	public void it_should_run_consumers_normally () {
-		test ("value", fn ((value) -> {
+	void it_should_run_consumers_normally () {
+		test ("value", fn (value -> {
 			if ( "fail".equals (value) ) { throw new Exception (); }
 		}));
 	}
 
 	@Test
-	public void it_should_run_bi_consumers_normally () {
+	void it_should_run_bi_consumers_normally () {
 		test ("longest", "value", fn ((a, b) -> {
 			if ( "fail".equals (a) || "fail".equals (b)) { throw new Exception (); }
 		}));
 	}
 
 	@Test
-	public void it_should_run_suppliers_normally () {
+	void it_should_run_suppliers_normally () {
 		String result = test (fn (() -> {
 			if ( false ) { throw new Exception (); }
 			return "other";
@@ -118,8 +121,23 @@ public class FunctionsTest {
 	}
 
 	@Test
-	public void it_should_run_runnables_normally () {
+	void it_should_run_runnable_normally () {
 		test (Functions.fn (() -> { }));
+	}
+
+	@Test
+	void it_should_produce_a_value_that_may_cause_an_error () {
+		URI uri = capture (() -> new URI ("http://localhost"));
+		assertThat (uri, not (nullValue ()));
+	}
+
+	@Test
+	void it_should_propagate_exceptions_when_producing_a_value_that_may_cause_an_error () {
+		RuntimeException e = assertThrows (RuntimeException.class, () -> {
+			capture (() -> new URI ("some random piece of text"));
+		});
+
+		assertThat (e.getMessage (), containsString ("Illegal character"));
 	}
 
 	/* -- helpers -- */

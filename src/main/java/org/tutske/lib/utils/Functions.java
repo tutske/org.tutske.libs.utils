@@ -71,6 +71,10 @@ public class Functions {
 		}
 	}
 
+	public static <T> T capture (RiskySupplier<T> fn ) {
+		return fn.get ();
+	}
+
 	public static void onShutdown (Runnable fn) { onShutdown (fn, Throwable::printStackTrace); }
 	public static <T> void onShutdown (Callable<T> fn) { onShutdown (fn, Throwable::printStackTrace); }
 	public static <T> void onShutdown (Supplier<T> fn) { onShutdown (fn, Throwable::printStackTrace); }
