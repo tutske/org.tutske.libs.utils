@@ -142,7 +142,10 @@ public class Config {
 
 	private ConfigValue find (String key) {
 		return valueCache.computeIfAbsent (key, k -> (
-			providers.stream ().map (p -> p.provider.apply (k)).findFirst ().orElse (ABSENT)
+			providers.stream ()
+				.map (p -> p.provider.apply (k))
+				.filter (ConfigValue::exists)
+				.findFirst ().orElse (ABSENT)
 		));
 	}
 
