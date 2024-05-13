@@ -6,13 +6,3 @@ group = 'org.tutske.libs'
 
 java.sourceCompatibility = JavaVersion.VERSION_21
 java.targetCompatibility = JavaVersion.VERSION_21
-
-compileJava {
-	doFirst {
-		options.compilerArgs = [
-			'--module-path', classpath.asPath,
-			'--release', '17'
-		]
-		classpath = files ()
-	}
-}
